@@ -513,7 +513,7 @@ function! s:show_lists(lists) abort
         let path = get(entry, 'path', '')
         let type = get(entry, 'type', empty(path) ? 'special' : 'file')
         let index = s:get_index_as_string()
-        call append('$', s:leftpad .'['. index .']'. repeat(' ', (3 - strlen(index))) . entry.line)
+        call append('$', s:leftpad .'['. index .']'. repeat(' ', (3 - strlen(index))) . entry.line . '  ['.index.']')
         call s:register(line('$'), index, type, cmd, path)
       endfor
       call append('$', '')
@@ -561,7 +561,7 @@ function! s:display_by_path(path_prefix, path_format, use_env) abort
         \ [a:path_prefix, a:path_format, a:use_env])
 
   let entry_format = "s:leftpad .'['. index .']'. repeat(' ', (3 - strlen(index))) ."
-  let entry_format .= exists('*StartifyEntryFormat') ? StartifyEntryFormat() : 'entry_path'
+  let entry_format .= exists('*StartifyEntryFormat') ? StartifyEntryFormat() : "entry_path.'  ['. index .']'"
 
   if !empty(oldfiles)
     if exists('s:last_message')
@@ -722,7 +722,7 @@ function! s:show_sessions() abort
     let index = s:get_index_as_string()
     let fname = fnamemodify(sfiles[i], ':t')
     let dname = sfiles[i] ==# v:this_session ? fname.' (*)' : fname
-    call append('$', s:leftpad .'['. index .']'. repeat(' ', (3 - strlen(index))) . dname)
+    call append('$', s:leftpad .'['. index .']'. repeat(' ', (3 - strlen(index))) . dname. '  ['.index.']')
     if has('win32')
       let fname = substitute(fname, '\[', '\[[]', 'g')
     endif
@@ -746,7 +746,7 @@ function! s:show_bookmarks() abort
   endif
 
   let entry_format = "s:leftpad .'['. index .']'. repeat(' ', (3 - strlen(index))) ."
-  let entry_format .= exists('*StartifyEntryFormat') ? StartifyEntryFormat() : 'entry_path'
+  let entry_format .= exists('*StartifyEntryFormat') ? StartifyEntryFormat() : "entry_path.'  ['. index .']'"
 
   for bookmark in g:startify_bookmarks
     if type(bookmark) == type({})
@@ -798,7 +798,7 @@ function! s:show_commands() abort
     " If no list is given, the description is the command itself.
     let [desc, cmd] = type(command) == type([]) ? command : [command, command]
 
-    call append('$', s:leftpad .'['. index .']'. repeat(' ', (3 - strlen(index))) . desc)
+    call append('$', s:leftpad .'['. index .']'. repeat(' ', (3 - strlen(index))) . desc. '  ['.index.']')
     call s:register(line('$'), index, 'special', cmd, '')
 
     unlet entry command
