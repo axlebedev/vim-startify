@@ -20,10 +20,14 @@ syntax match StartifySpecial /\V<empty buffer>\|<quit>/
 syntax match StartifyNumber  /^\s*\[\zs[^BSVT]\{-}\ze\]/
 syntax match StartifySelect  /^\s*\[\zs[BSVT]\{-}\ze\]/
 syntax match StartifyVar     /\$[^\/]\+/
+
+" Append StartifyNumber at the end of each line
+syntax match StartifyNumberEnd /\[[^BSVT]\{-}\]\s*$/ contained
 syntax match StartifyFile    /.*/ contains=
       \ StartifyBracket,
       \ StartifyPath,
       \ StartifySpecial,
+      \ StartifyNumberEnd
 
 execute 'syntax match StartifySlash /\'. s:sep .'/'
 execute 'syntax match StartifyPath /\%'. (len(s:padding_left) + 6) .'c.*\'. s:sep .'/ contains=StartifySlash,StartifyVar'
@@ -51,5 +55,8 @@ highlight default link StartifySelect  Title
 highlight default link StartifySlash   Delimiter
 highlight default link StartifySpecial Comment
 highlight default link StartifyVar     StartifyPath
+
+" Highlight for the new StartifyNumberEnd
+highlight default link StartifyNumberEnd Number
 
 let b:current_syntax = 'startify'
