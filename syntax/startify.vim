@@ -64,7 +64,18 @@ highlight EvenLineBackground ctermbg=LightGrey guibg=#e2e2e2
 function! HighlightEvenLines()
   let l:line = 1
   while l:line <= line('$')
-    if l:line % 2 == 0
+    " Check if the line is part of StartifyHeader, StartifyFooter, or StartifySection
+    let l:skip = 0
+    for synid in synstack(l:line, 1)
+      let l:synname = synIDattr(synid, 'name')
+      if l:synname =~# 'StartifyHeader\|StartifyFooter\|StartifySection'
+        let l:skip = 1
+        break
+      endif
+    endfor
+
+    " Apply even-line background highlight if the line is not skipped
+    if !l:skip && l:line % 2 == 0
       call matchadd('EvenLineBackground', '\%'.l:line.'l.*')
     endif
     let l:line += 1
