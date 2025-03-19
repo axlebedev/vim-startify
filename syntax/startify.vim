@@ -59,4 +59,19 @@ highlight default link StartifyVar     StartifyPath
 " Highlight for the new StartifyNumberEnd
 highlight default link StartifyNumberEnd Number
 
+" Custom highlight for even lines
+highlight EvenLineBackground ctermbg=LightGrey guibg=#e2e2e2
+function! HighlightEvenLines()
+  let l:line = 1
+  while l:line <= line('$')
+    if l:line % 2 == 0
+      call matchadd('EvenLineBackground', '\%'.l:line.'l.*')
+    endif
+    let l:line += 1
+  endwhile
+endfunction
+
+" Call the function to highlight even lines
+call HighlightEvenLines()
+
 let b:current_syntax = 'startify'
