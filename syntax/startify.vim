@@ -55,34 +55,32 @@ highlight default link StartifySelect  Title
 highlight default link StartifySlash   Delimiter
 highlight default link StartifySpecial Comment
 highlight default link StartifyVar     StartifyPath
-
-" Highlight for the new StartifyNumberEnd
 highlight default link StartifyNumberEnd Number
 
-" Custom highlight for even lines
-highlight EvenLineBackground ctermbg=LightGrey guibg=#e2e2e2
-function! HighlightEvenLines()
-  let l:line = 1
-  while l:line <= line('$')
-    " Check if the line is part of StartifyHeader, StartifyFooter, or StartifySection
-    let l:skip = 0
-    for synid in synstack(l:line, 1)
-      let l:synname = synIDattr(synid, 'name')
-      if l:synname =~# 'StartifyHeader\|StartifyFooter\|StartifySection'
-        let l:skip = 1
-        break
-      endif
-    endfor
-
-    " Apply even-line background highlight if the line is not skipped
-    if !l:skip && l:line % 2 == 0
-      call matchadd('EvenLineBackground', '\%'.l:line.'l.*')
-    endif
-    let l:line += 1
-  endwhile
-endfunction
-
-" Call the function to highlight even lines
-call HighlightEvenLines()
+" " Custom highlight for even lines
+" highlight EvenLineBackground ctermbg=LightGrey guibg=#e2e2e2
+" function! HighlightEvenLines()
+"   let l:line = 1
+"   while l:line <= line('$')
+"     " Check if the line is part of StartifyHeader, StartifyFooter, or StartifySection
+"     let l:skip = 0
+"     for synid in synstack(l:line, 1)
+"       let l:synname = synIDattr(synid, 'name')
+"       if l:synname =~# 'StartifyHeader\|StartifyFooter\|StartifySection'
+"         let l:skip = 1
+"         break
+"       endif
+"     endfor
+"
+"     " Apply even-line background highlight if the line is not skipped
+"     if !l:skip && l:line % 2 == 0
+"       call matchadd('EvenLineBackground', '\%'.l:line.'l.*')
+"     endif
+"     let l:line += 1
+"   endwhile
+" endfunction
+"
+" " Call the function to highlight even lines
+" call HighlightEvenLines()
 
 let b:current_syntax = 'startify'
